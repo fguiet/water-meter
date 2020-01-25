@@ -11,6 +11,7 @@ Water meter
                        2.0 - New version
                        2.1 - Improve algorithm
                        2.2 - Water sensor is reporting liter consumption ok!
+                       2.3 - Add Low Power consumption stuff
                        
 References :
 
