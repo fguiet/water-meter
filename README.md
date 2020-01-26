@@ -18,7 +18,7 @@ This project uses :
 
 |      Timestamp     | Raw water meter value | Total liters consumed (from sensor) |  Real water comsumption |  Sensor water  consumption |
 |:------------------:|:---------------------:|:-----------------------------------:|:-----------------------:|----------------------------|
-| 2020/01/26 @ 11h25 |        2064 937       |                                     |                         |                            |
+| 2020/01/26 @ 15h10 |        2064 995       |                  0                   |           0              |   0                         |
 
 ## 3D CNY70 Holder
 
