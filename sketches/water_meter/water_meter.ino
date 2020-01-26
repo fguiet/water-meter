@@ -3,7 +3,7 @@ Water meter
 
    Author :             F. Guiet 
    Creation           : 20200103
-   Last modification  : 20200124
+   Last modification  : 20200126
   
   Version            : 1.0
   History            : 1.0 - First version
@@ -12,6 +12,7 @@ Water meter
                        2.1 - Improve algorithm
                        2.2 - Water sensor is reporting liter consumption ok!
                        2.3 - Add Low Power consumption stuff
+                       2.4 - Fix issue with liter consumed
                        
 References :
 
@@ -47,9 +48,7 @@ Careful :
 #include <LowPower.h>
 
 #define DEBUG 0
-#define FIRMWARE_VERSION "2.3"
-
-//const int CYBLE_ANALOG_VOLTAGE_THRESHOLD = 500;
+#define FIRMWARE_VERSION "2.4"
 
 const int LED_PIN = 2;
 const int INTERRUPT_PIN = 3; //Comes from sensor
@@ -173,12 +172,11 @@ void loop() {
 
   //Wait 5 secondes before sending another message (in order not to flood the system in case someone is taking
   //a bath and is consumiming a lot of water)
-  if (literConsumedCounter > 0 && (millis() - startTime) > interval) {
-    literConsumedCounter = 0;    
+  if (literConsumedCounter > 0 && (millis() - startTime) > interval) {    
     startTime = millis();
     idleTime = millis();
     sendMessage(String(literConsumedCounter));    
-
+    literConsumedCounter = 0;    
     //delay(500); Removed in v2.1
   }  
 
