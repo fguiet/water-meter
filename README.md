@@ -14,13 +14,14 @@ This project uses :
 * TP4056 (Lithium Battery Charger Module)
 * E45-TTL-100 (Wireless transceiver module with LoRa spread-spectrum technology)
 
-## Precision
+## Sensor accuracy
 
 | Timestamp | Raw water meter value | Total liters consumed (from sensor) |  Real water comsumption |  Sensor water  consumption |
 |:------------------:|:---------------------:|:-----------------------------------:|:-----------------------:|:--------------------------:|
 | 2020/01/26 @ 15h10 | 2064 996 | 0 | 0 | 0 |
 | 2020/01/26 @ 17h23 | 2065 045 | 50 | __49__ | __50__ |
 | 2020/01/26 @ 19h59 | 2065 279 | 283 | __234__ | __233__ |
+| 2020/01/27 @ 17h48 | 2065 488 | 493 | __209__ | __210__ |
 
 ## 3D CNY70 Holder
 
