@@ -14,6 +14,12 @@ This project uses :
 * TP4056 (Lithium Battery Charger Module)
 * E45-TTL-100 (Wireless transceiver module with LoRa spread-spectrum technology)
 
+## Datasheet
+
+* Schema
+
+Available here : <https://easyeda.com/fguiet/water-meter>
+
 ## Sensor accuracy
 
 | Timestamp | Raw water meter value | Total liters consumed (from sensor) |  Real water comsumption |  Sensor water  consumption |
