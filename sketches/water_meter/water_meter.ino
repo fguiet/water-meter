@@ -13,6 +13,7 @@ Water meter
                        2.2 - Water sensor is reporting liter consumption ok!
                        2.3 - Add Low Power consumption stuff
                        2.4 - Fix issue with liter consumed
+                       2.5 - Remove Low Power Consumption....reading are bad...
                        
 References :
 
@@ -35,6 +36,11 @@ E32-TTL-100 Byte
   - Note from datasheet : for some MCU works at 5VDC, it may need to add 4-10k pull-up resistor for the TXD & AUX pin
   - 512 bytes buffer (58 bytes per package)
 
+Arduino Pro Micro Datasheet
+  - https://github.com/sparkfun/Pro_Micro/blob/master/Documentation/ProMicro8MHzv2.pdf
+  - Nice Ref about low power consumption : https://andreasrohner.at/posts/Electronics/How-to-modify-an-Arduino-Pro-Mini-clone-for-low-power-consumption/
+  - LG33 voltage regulator : https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=2ahUKEwj7xJu8yoroAhUGDmMBHb58ChYQFjAAegQIARAB&url=https%3A%2F%2Fcdn-shop.adafruit.com%2Fproduct-files%2F3081%2Fmic5219.pdf&usg=AOvVaw01f0t1pEEkpVxkZzFphFFY
+
 Consumption (without Power Led (add 3mAh with Power Led)) :
   -  RAW PIN (use 3.3v Arduino regulator) : 50mA (39mA idle mode) 
   -  VCC PIN (do not use 3.3v Arduino regulator, so be CAREFUL TX pin is at VCC and is not compatible with TX pin of E32-TTL-100 LoRa Node) : 50mA (39mA idle mode)
@@ -42,13 +48,17 @@ Consumption (without Power Led (add 3mAh with Power Led)) :
 Careful :
    - Interrupt pin should not receive more than 3.3v...
 
+HIGH will be report if voltage >= 2.0v
+   https://www.arduino.cc/reference/en/language/variables/constants/constants/
+
 */
 
 #include <ArduinoJson.h>
-#include <LowPower.h>
+//#include <SoftwareSerial.h>
+//#include <LowPower.h>
 
 #define DEBUG 0
-#define FIRMWARE_VERSION "2.4"
+#define FIRMWARE_VERSION "2.5"
 
 const int LED_PIN = 2;
 const int INTERRUPT_PIN = 3; //Comes from sensor
@@ -70,7 +80,7 @@ unsigned long startTime = millis();
 unsigned long idleTime = millis();
 
 const unsigned long interval = 5UL*1000UL;   //5s
-const unsigned long idleInterval = 30UL*1000UL;  //30s
+const unsigned long idleInterval = 60UL * 1000UL * 60UL;  //1h
 
 struct Sensor {
     String Name;    
@@ -79,6 +89,8 @@ struct Sensor {
 
 #define SENSORS_COUNT 1
 Sensor sensors[SENSORS_COUNT];
+
+//SoftwareSerial mySerial(10, 16); // RX, TX
 
 void setup() {
 
@@ -101,8 +113,10 @@ void setup() {
   Serial1.begin(9600);
   
   // Initialize Serial Port
-  if (DEBUG)
+  if (DEBUG) {
     Serial.begin(115200);
+    //mySerial.begin(115200);
+  }
 
   digitalWrite(M0_PIN, HIGH); //
   digitalWrite(M1_PIN, HIGH); //High = Sleep mode
@@ -127,12 +141,16 @@ void OnRisingChange() {
 
 void loop() {
 
-  //int intPinValue = digitalRead(INTERRUPT_PIN);
-//  debug_message("Interrupt Pin Status :  " + String(intPinValue), true);  
+  /*int intPinValue = digitalRead(INTERRUPT_PIN);
+  debug_message("Interrupt Pin Status :  " + String(intPinValue), true);    
   
-  //int inputVoltage = analogRead(SENSOR_PIN);  
+  int inputVoltage = analogRead(SENSOR_PIN);  
+  debug_message("Input Voltage :  " + String(inputVoltage), true);  
+  */
 
- // debug_message("Input Voltage :  " + String(inputVoltage), true);  
+  /*delay(200);
+
+  return;*/
   
   /*
   
@@ -180,6 +198,15 @@ void loop() {
     //delay(500); Removed in v2.1
   }  
 
+  //Send battery voltage every hour
+  if ((millis() - idleTime) > idleInterval || idleTime > millis()) {
+    startTime = millis();
+    idleTime = millis();
+    sendMessage("0");
+  }
+
+  /*
+
   //No activity during 30s...ok time to hibernate
   if ((millis() - idleTime) > idleInterval) {
 
@@ -205,6 +232,7 @@ void loop() {
       sendMessage("0");
     }
   }  
+  */
   
   delay(50);
 }
@@ -212,7 +240,7 @@ void loop() {
 void InitSensors() {
   
   sensors[0].Name = "WM";
-  sensors[0].SensorId = "19";
+  sensors[0].SensorId = "20";
 }
 
 float ReadVoltage() {
@@ -237,10 +265,14 @@ float ReadVoltage() {
 
 void debug_message(String message, bool doReturnLine) {
   if (DEBUG) {
-    if (doReturnLine)
+    if (doReturnLine) {
+      //mySerial.println(message);
       Serial.println(message);
-    else
+    }
+    else {
+      //mySerial.println(message);
       Serial.print(message);
+    }
   }
 }
 
