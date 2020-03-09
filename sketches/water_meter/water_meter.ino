@@ -14,6 +14,7 @@ Water meter
                        2.3 - Add Low Power consumption stuff
                        2.4 - Fix issue with liter consumed
                        2.5 - Remove Low Power Consumption....reading are bad...
+                       2.6 - Add alive blink
                        
 References :
 
@@ -57,8 +58,8 @@ HIGH will be report if voltage >= 2.0v
 //#include <SoftwareSerial.h>
 //#include <LowPower.h>
 
-#define DEBUG 1
-#define FIRMWARE_VERSION "2.5"
+#define DEBUG 0
+#define FIRMWARE_VERSION "2.6"
 
 const int LED_PIN = 2;
 const int INTERRUPT_PIN = 3; //Comes from sensor
