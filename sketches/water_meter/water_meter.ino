@@ -57,7 +57,7 @@ HIGH will be report if voltage >= 2.0v
 //#include <SoftwareSerial.h>
 //#include <LowPower.h>
 
-#define DEBUG 0
+#define DEBUG 1
 #define FIRMWARE_VERSION "2.5"
 
 const int LED_PIN = 2;
@@ -146,12 +146,12 @@ void loop() {
   
   int inputVoltage = analogRead(SENSOR_PIN);  
   debug_message("Input Voltage :  " + String(inputVoltage), true);  
-  */
-
-  /*delay(200);
-
-  return;*/
   
+
+  delay(200);
+
+  return;
+  */
   /*
   
   if (cybleDetected) {
