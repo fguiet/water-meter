@@ -197,7 +197,7 @@ void loop() {
     startTime = millis();
     idleTime = millis();
     sendMessage(String(literConsumedCounter));    
-    literConsumedCounter = 0;    
+    literConsumedCounter--;    
     //delay(500); Removed in v2.1
   }  
 
