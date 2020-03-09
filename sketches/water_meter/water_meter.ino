@@ -253,7 +253,7 @@ void loop() {
 void InitSensors() {
   
   sensors[0].Name = "WM";
-  sensors[0].SensorId = "20";
+  sensors[0].SensorId = "19";
 }
 
 float ReadVoltage() {
