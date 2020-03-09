@@ -78,8 +78,10 @@ unsigned int literConsumedCounter = 0;
 
 unsigned long startTime = millis();
 unsigned long idleTime = millis();
+unsigned long blinkTime = millis();
 
 const unsigned long interval = 5UL*1000UL;   //5s
+const unsigned long blinkInterval = 10UL*1000UL;   //60s
 const unsigned long idleInterval = 60UL * 1000UL * 60UL;  //1h
 
 struct Sensor {
@@ -203,6 +205,16 @@ void loop() {
     startTime = millis();
     idleTime = millis();
     sendMessage("0");
+  }
+
+  //Alive blink!
+  if ((millis() - blinkTime) > blinkInterval || blinkTime > millis()) {
+    blinkTime = millis();
+    
+    digitalWrite(LED_PIN, HIGH);
+    delay(100);
+    digitalWrite(LED_PIN, LOW);
+    delay(100);    
   }
 
   /*
